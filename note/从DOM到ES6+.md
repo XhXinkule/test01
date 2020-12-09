@@ -710,3 +710,55 @@ onmessage=function(mes){
 }
 ```
 
+#### 54.严格模式
+
+- 严格模式下的js：声明定义变量更严格更安全。
+- 可以提高js解析的性能、js代码运行的速度（载体运行js时不需要过多的去判断确认）。
+
+- 使用方法：
+
+```javascript
+"use strict"//作用域的首行书写
+a='我不想var';
+console.log(a);//1.声明变量必须加上声明类型
+function fn(){
+    "use strict";
+    console.log(this);//2.函数中this指向undefined
+}
+var b=3;//3.严格区分全局作用域和eval作用域
+eval('var b;alert(b)');//undefiend
+```
+
+#### 55.let变量（作用于块级作用域）
+
+- 可以减少使用全局变量的风险（全局变量容易被串改，产生闭包占用内存）
+
+- 特点：
+  - 1.let变量不能变量提升
+  - 2.同一个作用域中不能重复声明
+  - 3.块级作用域可以任意嵌套，let变量可以区分
+
+- 特殊的for循环作用域问题:
+
+```javascript
+//for循环中的括号是介于全局和循环体之间的一个独立作用域
+for (let i = 0; i < 3; i++) {
+    //声明i没有报错
+    let i = "a";
+    console.log(i);//a a a
+}
+```
+
+- let解决计时器问题
+
+```javascript
+for(let i=0;i<3;i++){
+    setTimeout(function(){
+        console.log(i);//0 1 2
+    })
+}
+```
+
+#### 56.const常量（不会变化的数据）
+
+- const声明数据方式相对于其他的声明方式更安全，因为const声明的数据是不允许发生改变的。
