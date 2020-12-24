@@ -762,3 +762,450 @@ for(let i=0;i<3;i++){
 #### 56.const常量（不会变化的数据）
 
 - const声明数据方式相对于其他的声明方式更安全，因为const声明的数据是不允许发生改变的。
+- 特点：
+  - const声明的是只读的常量，常量不运行被修改，通常我们声明const常量名称使用全大写，例：PI
+  - const声明的引用类型，再不改变地址的情况下，可以修改引用类型里面的属性和方法
+  - const声明的常量必须赋值
+  - const常量不运行重复声明
+  - const声明的常量是块作用域生效的
+  - let和const声明的全局变量，都不属于window对象
+- const必须赋值
+
+```javascript
+const a;//报错：Missing initializer in const declaration(常量声明缺少初始化)
+```
+
+- const作用域块级作用域
+
+```javascript
+{const e=666}
+console.log(e);//e没有定义
+```
+
+- let和const不属于window对象
+
+```javascript
+let l=1;
+const s=2;
+console.log(window.l,window.s);//undefined undefined
+```
+
+#### 57.数组的结构赋值
+
+- 数组解构赋值关键：掌握好一一对应的关系
+
+```javascript
+const arr[1,2,3];
+//结构赋值之后，就可以直接使用a b c变量了
+let [a,b,c]=arr;
+console.log(a,b,c);//1 2 3
+```
+
+- 解构失败
+
+```javascript
+let[d,e]=[4];
+// 赋值数组不足变量数组时，多出来的变量为undefined
+console.log(d,e);
+```
+
+- 不完全解构
+
+```js
+let [f]=[5,6];
+// 变量数组小于赋值数组 得到可对应的值
+console.log(f);//5
+```
+
+- rest参数
+
+```js
+//rest参数可以获取剩下的值,rest必须在最后一位
+let[g,h,...rest]=[1,2,3,4,5,6];
+console.log(g,h,rest);//1 2 [3~6]
+```
+
+- 多维数组也可以解构 前提也必须一一对应
+
+```js
+let[i,[j,k],[l,m,[n,o],p],q]=[1,[2,3],[5,6,[7,8],9],10];
+console.log(i,j,k,l,m,n,o,p,q);//1 2 3 4 5 6 7 8 9 10
+```
+
+- 解构赋值设置默认值 有则替换默认值,没有则使用默认
+
+```js
+let [r=8,s=9]=[1];
+console.log(r,s);//1 9
+```
+
+#### 58.对象的结构赋值
+
+- 对象的结构赋值关键：掌握好key值的对应关系
+
+```js
+//普通对象解构
+const obj ={
+    name:'zs',
+    age:14
+}
+const {age:age1,name:name1}=obj;//完整写法
+const {age,name}=obj;//简写
+console.log(age.name);//zs 14
+```
+
+- 对象解构设置默认值
+
+```js
+const obj ={
+    name:'zs',
+    age:14
+}
+const {name='user',age='99',sex='未知'}=obj
+console.log(name,age,sex);//zs 14 未知
+```
+
+- 对象和数组解构可以嵌套使用
+
+```js
+const obj={
+	name:'zs',
+	score:[99,88]
+}
+const {name,score:[a,b]}=obj
+console.log(name,a,b);//zs 99 88
+```
+
+- 对象解构使用rest参数
+
+```js
+const obj={
+    name:'zs',
+    age:14,
+    sex:'nan'
+}
+//可以使用rest获取我们想要的部分，将不想要的部分解构出去
+const {sex,...rest}=obj;
+console.log(sex,rest);//nan {name:'zs',age:14}
+```
+
+#### 59.ES5创建对象的新方法
+
+- 创建对象：`Object.create(prototype,description)`
+
+- 参数1：新对象指向的原型对象,可以时任意对象或者是null(必填)
+
+- 参数2：属性配置对象：{
+
+  ​	key:{
+
+  ​		1.value:当前属性的值
+
+  ​		2.writable：是否可以被修改，默认为false
+
+  ​		3.enumerable：是否可以被遍历，默认为false
+
+  ​		4.configurable：属性是否可被删除或修改，默认为false
+
+  ​	}
+
+  }
+
+```js
+//模拟一个原型对象
+const protoObj={
+    type:'Object',
+    say:function(){
+        console.log('我是原型对象')
+    }
+}
+//使用ES5新方法创建对象
+const obj=Object.create(protoObj,{
+    name:{
+        value:'zs',
+        writeble:true,//可修改
+        enumerable:true,//可以遍历
+        configureable:false,//不可删除
+    }
+})
+delete newObj.age;//不能删除
+obj.name='ls';//可以修改
+for(let key in obj){
+    //可以遍历
+    console.log(obj[key]);
+}
+```
+
+- 注意：
+
+  1.ES5新方法创建对象，显式原型不再默认指向Object构造函数了，
+
+  而是有第一个参数来决定原型指向。
+
+  2.`{}`和`new Object()`的原型都默认指向Object构造函数
+
+  3.新方法的第二个参数可以控制对象属性的配置项，底层更安全。
+
+#### 60.ES5扩展属性新方法
+
+- 扩展一个属性:`Object.defineProperty(obj,key,{})`
+
+  ```js
+  Object.defineProperty(
+  
+  	参数1：需要扩展属性的对象，
+  
+  	参数2：属性的key值，
+  
+  	参数3：属性配置对象{
+  					value,
+  
+  					writable,
+  
+  					enumerable,
+  
+  					configurable,
+  				}
+  
+  )
+  ```
+
+  
+
+- 扩展一个或多个属性:Object
+
+```js
+Object.defineProperties(
+参数1：需要扩展属性的对象，
+
+参数2：对象{
+	key:{
+		value,
+		writable,
+		enumerable,
+		configurable
+	}
+}
+```
+
+)
+
+#### 61.对象的存储器属性
+
+```js
+const person={
+	firstName:'zhang',
+    lastName:'san',
+    //getter+属性名 存储
+    get fullName(){
+        return this.firstName+this.lastName
+    }
+    //setter+属性名 设置
+    set fullName(value){
+        let arr=value.split(' ');
+        this.firstName=arr[0];
+        this.lastName=arr[1];
+    }
+}
+//直接赋值 就相当于传参
+preson.fullName='li si'
+//直接获取全名
+console.log(person.fullName);//lisi
+```
+
+#### 62.字符串的新方法
+
+- 空格相关：
+  - 1.`trim`首尾清除空格
+  - 2.`trimStart`开头清除空格
+  - 3.`trimEnd`末尾清除空格
+
+- 判断字符是否符合条件，返回布尔值：
+  - 1.`startsWith(str)`是否str开头
+  - 2.`endsWith(str)`是否以str结尾
+  - 3.`includes(str)`是否包含str
+
+- 填充字符串：
+  - 1.`repeat(n)`重复n次字符串
+  - 2.`padStart(n,str)`从开头开始填充str至n的长度
+  - 3.`padEnd(n,str)`从结尾开始填充str至n的长度
+
+#### 63.Math扩展的新方法
+
+- `a**b`求a的b次方：
+
+```js
+//老方法
+Math.pow(2,3);//8
+//新方法 求a的b次方
+a**b
+//从右向左运算
+a**b**c ==> a的b**c次方
+```
+
+- 进制的写法
+
+```js
+const num1=0b1001;//数值前面+0b  二进制
+const num2=0o10;//+0o  八进制
+const num3=0xff;//+0x  十六进制
+```
+
+- `Math.trunc`截取小数部分
+
+```js
+Math.trunc(3.1415)//3
+Math.trunc('3.1415')//转换为number后 3
+Math.trunc('3.1415fff')//NaN 
+Math.trunc(true)//1
+Math.trunc(false)//0
+```
+
+- `Math.sign`检测是否为正数、负数、0、NaN
+
+```js
+Math.sign(5)//1
+Math.sign(-5)//-1
+Math.sign(0)//0
+Math.sign(NaN)//NaN
+Math.sign(Infinity)//1
+Math.sign(10E10)//1
+```
+
+- `Math.sqrt`取平方根
+- `Math.cbrt`取立方根
+
+```js
+Math.sqrt(9)//3
+Math.sqrt(4)//2
+Math.cbrt(27)//3
+Math.cbrt(8)//2
+```
+
+- `Math.hypot`取三角形的斜边
+
+```js
+Math.hypot(3,4)//5
+//3的平方+4的平方的和 取平方根=5
+```
+
+#### 64.Number的新增静态方法
+
+- `isFinite(num)`判断是否是有限大
+
+```js
+console.log(Number.isFinite(2**1024));//无限大false
+console.log(Number.isFinite(123));//有限值true
+```
+
+- `isNaN(num)`判断是否是NaN
+
+```js
+let num=5/0;//infinity
+let num1=3+undefined;//NaN
+console.log(Number.isNaN(num));//false
+console.log(Number.isNaN(num1));//true
+```
+
+- `isInteger(num)`判断是否是整数
+
+```js
+console.log(Number.isInteger(-3));//true
+console.log(Number.isInteger(-3.9));//false
+console.log(Number.isInteger(3.1));//false
+console.log(Number.parseInt('123xx'));//123
+console.log(Number.parseInt('qq123xx'));//NaN
+```
+
+- 扩展：`parseInt(str)`可以截取数值后面的字符串
+
+```js
+let width='100px';
+parseInt(width)//100
+//然后使用100进行计算 再设置时进行px拼接
+```
+
+#### 65...扩展运算符（三点运算符）
+
+- `...`可以用来展开数组(展开一个具有iterator（迭代器）接口的值)
+
+```js
+//扩展数组
+const arr=[1,2,3]
+console.log(...arr)//1 2 3
+```
+
+- 浅复制数组
+
+```js
+const arr = [1, 2, 3, 4];
+const newArr = [...arr2];
+console.log(newArr)//[1,2,3,4]
+```
+
+- 合并数组
+
+```js
+const arr1=[1,2,3];
+const arr2=[4,5,6];
+const newArr=[...arr1,...arr2];//[1,2,3,4,5,6]
+```
+
+- 扩展字符串
+
+```js
+const str='hello';
+console.log(...str);//h e l l o
+```
+
+- 合并数组和字符串
+
+```js
+const str = "hello";
+const arr = [1, ...str,4];
+console.log(arr)//1 h e l l o 4
+```
+
+#### 66.Array新增静态方法
+
+- `Array.from`将伪数组转换为数组
+
+```js
+const likeArr={
+	0:'a',
+	1:'b',
+	2:'c',
+    length:3,
+}
+//必须要具备length属性和以有序的数字为key才可以转真数组
+Array.from(likeArr);
+```
+
+- `Array.of()`创建一个新数组
+
+```js
+//主要解决了new Array(3)为3个长度的空数组的问题
+Array.of(3); //[3] 1个长度的数组
+```
+
+#### 67.数组对象的新方法
+
+- `copyWithin(num1,num2,num3)`从指定位置赋值并覆盖到指定位置
+
+```js
+/*[].copyWithin(n1,n2,n3)
+参数1:开始覆盖的位置
+参数2：开始复制的位置
+参数3：结束复制的位置
+*/
+let arr=['a','b','c','d']
+console.log(arr.copyWithin(0,1,3))//['b','c','c','d']
+```
+
+- `fill(con,num1,num2)`填充指定内容从num1位置到num2结束
+
+
+
+
+
+- 
