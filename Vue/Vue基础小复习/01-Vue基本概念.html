@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        Vue是一个渐进式的前端框架。
+        渐进式：本身实现的功能是有限的，但是可以安装相关的包、插件去实现更多的功能。
+
+        Vue是响应式框架，通过数据变化，来改变视图渲染
+
+        Vue中可以通过指令来动态的获取和改变数据。
+        常用的指令有：
+        v-bind 强制数据绑定 简写:+属性名
+        v-on 事件绑定 简写@+事件类型
+        v-model 双向数据绑定 一般用在表单上，动态的收集和设置数据(原理是input事件和改变value属性值)
+        v-if/v-else-if/v-else 条件渲染指令 (是否存在DOM树中)
+        v-show 条件渲染 (控制标签的display输出)
+        v-for 遍历数组及对象，通常展示列表 一般配合key属性使用
+        v-text 相当于innerText和textContent
+        v-html 相当于innerHTML
+
+        插值语法：{{xxx}}
+
+        动态绑定标签样式 :class和:style
+
+        Vue实例化时传入的配置对象：
+        el属性 绑定html模板 在模板中才可以使用Vue的插值语法和指令
+        data 普通属性对象 存放数据
+        computed 计算属性对象 存放的数据会产生联动的变化(A变化了B也会变化)
+        watch 侦听器 监听某个数据 如果变化了 就进行一系列操作
+        
+        Vue的声明周期钩子(执行顺序从上到下):
+        beforeCreate()----数据创建之前
+        created()----数据创建完毕
+        beforeMount()----界面加载之前
+        mounted()----界面加载完毕
+        beforeUpdate()----界面更新之前
+        updated()----界面更新完毕
+        beforeDestroy()----Vue摧毁之前
+        destroyed()----Vue摧毁完成
+
+        过渡和动画：包裹 transition标签 定义name名称
+        通过样式方式去设置过渡/动画执行的过程
+
+
+        过滤器：Vue.Filter('过滤后的变量',(data)=>{
+            执行过滤的回调...
+            data是需要过滤的数据
+            return 返回过滤后的结果存在过滤后变量中
+        }) 
+        {{data|过滤后变量}} |前面是传递需要过滤的数据
+
+        插件:
+        引入插件名.js、或下载需要使用的插件后
+        声明使用插件：Vue.use(插件名)
+        
+        关于key的问题：
+        尽量使用唯一值id作为key 配合列表中
+        index作为key 列表在添加/删除/排序的时候可能会出问题，因为每次操作，下标和项之间的关系都会发生变化
+     -->
+</body>
+</html>
